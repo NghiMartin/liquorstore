@@ -10,6 +10,10 @@ export function getCartFromLocalStorage() {
     const cart = localStorage.getItem('cart');
     return cart ? JSON.parse(cart) : [];
 }
+export function deleteCartFromLocalStorage() {
+    const cart = localStorage.removeItem('cart');
+    return;
+}
 export function renderCartDropdown() {
     const cart = getCartFromLocalStorage() || [];
     console.log({cart}); 
@@ -173,6 +177,7 @@ $(document).ready(function () {
         console.log('click');
         const idUser = generateRandomId();
         window.location.href = `https://payment-client-web.vercel.app/?idUser=${idUser}&priceTotal=${totalOrder}`; 
+        deleteCartFromLocalStorage();
     });
 });
 export function addToCart(product) {
