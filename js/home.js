@@ -1,5 +1,7 @@
 import { products } from "./data.js";
-import { toastr_options } from "./utils.js";
+import { generateRandomId, toastr_options } from "./utils.js";
+
+let totalOrder;
 export function saveCartToLocalStorage(cart) {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
@@ -67,6 +69,7 @@ export function renderCartDropdown() {
     $("#delivery").text(`$${deliveryFee.toFixed(2)}`);
     $("#discount").text(`$${discount.toFixed(2)}`);
     $("#total").text(`$${total.toFixed(2)}`);
+    totalOrder = total.toFixed(2);
 }
 
 function renderCartAll(cart) {
@@ -142,7 +145,6 @@ $(document).ready(function () {
     });
     $(document).on('click', '.add-to-cart', function (e) {
         e.preventDefault();
-    
         const productId = $(this).data('id');
     
         const product = products.find(p => p.id === productId);
@@ -164,13 +166,13 @@ $(document).ready(function () {
         });
 
     renderCartDropdown();
-
+    
     // Handle redirect page Checkout
     $('.checkOutBtn').on('click', function (e) {
         e.preventDefault();
         console.log('click');
-        window.location.href = 'https://payment-client-web.vercel.app/?idUser=1231asdasghgasd&priceTotal=71';
-        
+        const idUser = generateRandomId();
+        window.location.href = `https://payment-client-web.vercel.app/?idUser=${idUser}&priceTotal=${totalOrder}`; 
     });
 });
 export function addToCart(product) {
